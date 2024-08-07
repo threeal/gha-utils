@@ -1,19 +1,19 @@
 {
-  "name": "my_fibonacci",
+  "name": "gha-utils",
   "version": "0.0.0",
-  "description": "A starter Node.js package for generating a Fibonacci sequence.",
+  "description": "A minimalistic utility package for developing GitHub Actions",
   "keywords": [
-    "nodejs",
-    "starter",
-    "fibonacci"
+    "github",
+    "actions",
+    "utility"
   ],
-  "homepage": "https://github.com/threeal/nodejs-starter#readme",
+  "homepage": "https://github.com/threeal/gha-utils#readme",
   "bugs": {
-    "url": "https://github.com/threeal/nodejs-starter/issues",
+    "url": "https://github.com/threeal/gha-utils/issues",
     "email": "alfi.maulana.f@gmail.com"
   },
-  "repository": "github:threeal/nodejs-starter",
-  "license": "Unlicense",
+  "repository": "github:threeal/gha-utils",
+  "license": "MIT",
   "author": "Alfi Maulana <alfi.maulana.f@gmail.com>",
   "type": "module",
   "main": "dist/index.js",
