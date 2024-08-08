@@ -18,6 +18,14 @@ GitHub Actions inputs can be retrieved using the `getInput` function, which will
 const input = getInput("input-name");
 ```
 
+### Setting Outputs
+
+GitHub Actions outputs can be set using the `setOutput` function:
+
+```ts
+setOutput("output-name", "some value");
+```
+
 ## License
 
 This project is licensed under the terms of the [MIT License](./LICENSE).
