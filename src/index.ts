@@ -1,5 +1,3 @@
-export { fibonacciSequence } from "./sequence.js";
-
 /**
  * Retrieves the value of a GitHub Actions input.
  *
