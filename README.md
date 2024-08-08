@@ -2,6 +2,42 @@
 
 A minimalistic utility package for developing [GitHub Actions](https://github.com/features/actions).
 
+## Key Features
+
+- ES Module support.
+- Getting inputs and setting outputs.
+- Logging errors.
+
+## Usage Guide
+
+### Getting Inputs
+
+GitHub Actions inputs can be retrieved using the `getInput` function, which will return a trimmed string or an empty string if the input is not specified:
+
+```ts
+const input = getInput("input-name");
+```
+
+### Setting Outputs
+
+GitHub Actions outputs can be set using the `setOutput` function:
+
+```ts
+setOutput("output-name", "some value");
+```
+
+### Logging Errors
+
+Errors can be logged using the `error` function, which can log errors of any type. This is especially useful for logging caught errors:
+
+```ts
+try {
+  // Do something
+} catch (err) {
+  error(err);
+}
+```
+
 ## License
 
 This project is licensed under the terms of the [MIT License](./LICENSE).
