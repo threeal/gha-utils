@@ -24,3 +24,13 @@ export function setOutput(name: string, value: string): void {
     `${name}=${value}${os.EOL}`,
   );
 }
+
+/**
+ * Logs an error message on GitHub Actions.
+ *
+ * @param err - The error, which can be of any type.
+ */
+export function error(err: unknown): void {
+  const message = err instanceof Error ? err.message : String(err);
+  process.stdout.write(`::error::${message}${os.EOL}`);
+}

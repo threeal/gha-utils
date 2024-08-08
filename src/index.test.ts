@@ -1,7 +1,8 @@
+import { jest } from "@jest/globals";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { getInput, setOutput } from "./index.js";
+import { error, getInput, setOutput } from "./index.js";
 
 describe("retrieve GitHub Actions inputs", () => {
   it("should retrieve a GitHub Actions input", () => {
@@ -37,5 +38,29 @@ describe("set GitHub Actions outputs", () => {
     if (fs.existsSync(tempFile)) {
       fs.rmSync(tempFile);
     }
+  });
+});
+
+describe("log errors on GitHub Actions", () => {
+  let stdoutData: string;
+  beforeAll(() => {
+    jest
+      .spyOn(process.stdout, "write")
+      .mockImplementation((str: string | Uint8Array): boolean => {
+        stdoutData += str;
+        return true;
+      });
+  });
+
+  it("should log an error message on GitHub Actions", () => {
+    stdoutData = "";
+    error("some error message");
+    expect(stdoutData).toBe(`::error::some error message${os.EOL}`);
+  });
+
+  it("should log an error object on GitHub Actions", () => {
+    stdoutData = "";
+    error(new Error("some error object"));
+    expect(stdoutData).toBe(`::error::some error object${os.EOL}`);
   });
 });
