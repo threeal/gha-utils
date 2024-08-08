@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { error, getInput, setOutput } from "./index.js";
+import { getInput, logError, setOutput } from "./index.js";
 
 describe("retrieve GitHub Actions inputs", () => {
   it("should retrieve a GitHub Actions input", () => {
@@ -41,7 +41,7 @@ describe("set GitHub Actions outputs", () => {
   });
 });
 
-describe("log errors on GitHub Actions", () => {
+describe("log errors in GitHub Actions", () => {
   let stdoutData: string;
   beforeAll(() => {
     jest
@@ -52,15 +52,15 @@ describe("log errors on GitHub Actions", () => {
       });
   });
 
-  it("should log an error message on GitHub Actions", () => {
+  it("should log an error message in GitHub Actions", () => {
     stdoutData = "";
-    error("some error message");
+    logError("some error message");
     expect(stdoutData).toBe(`::error::some error message${os.EOL}`);
   });
 
-  it("should log an error object on GitHub Actions", () => {
+  it("should log an error object in GitHub Actions", () => {
     stdoutData = "";
-    error(new Error("some error object"));
+    logError(new Error("some error object"));
     expect(stdoutData).toBe(`::error::some error object${os.EOL}`);
   });
 });
