@@ -2670,6 +2670,7 @@ __metadata:
   resolution: "gha-utils@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.8.0"
+    "@jest/globals": "npm:^29.7.0"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:^22.1.0"
     eslint: "npm:^9.8.0"
