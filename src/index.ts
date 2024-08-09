@@ -26,11 +26,11 @@ export function setOutput(name: string, value: string): void {
 }
 
 /**
- * Logs an error message on GitHub Actions.
+ * Logs an error message in GitHub Actions.
  *
  * @param err - The error, which can be of any type.
  */
-export function error(err: unknown): void {
+export function logError(err: unknown): void {
   const message = err instanceof Error ? err.message : String(err);
   process.stdout.write(`::error::${message}${os.EOL}`);
 }

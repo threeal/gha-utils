@@ -28,13 +28,13 @@ setOutput("output-name", "some value");
 
 ### Logging Errors
 
-Errors can be logged using the `error` function, which can log errors of any type. This is especially useful for logging caught errors:
+Errors can be logged using the `logError` function, which can log errors of any type. This is especially useful for logging caught errors:
 
 ```ts
 try {
   // Do something
 } catch (err) {
-  error(err);
+  logError(err);
 }
 ```
 
