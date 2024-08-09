@@ -2,7 +2,17 @@ import { jest } from "@jest/globals";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { getInput, logError, setOutput } from "./index.js";
+import { getInput, logError, logInfo, setOutput } from "./index.js";
+
+let stdoutData: string;
+beforeAll(() => {
+  jest
+    .spyOn(process.stdout, "write")
+    .mockImplementation((str: string | Uint8Array): boolean => {
+      stdoutData += str;
+      return true;
+    });
+});
 
 describe("retrieve GitHub Actions inputs", () => {
   it("should retrieve a GitHub Actions input", () => {
@@ -41,17 +51,15 @@ describe("set GitHub Actions outputs", () => {
   });
 });
 
-describe("log errors in GitHub Actions", () => {
-  let stdoutData: string;
-  beforeAll(() => {
-    jest
-      .spyOn(process.stdout, "write")
-      .mockImplementation((str: string | Uint8Array): boolean => {
-        stdoutData += str;
-        return true;
-      });
+describe("log information in GitHub Actions", () => {
+  it("should log an information message in GitHub Actions", () => {
+    stdoutData = "";
+    logInfo("some information message");
+    expect(stdoutData).toBe(`some information message${os.EOL}`);
   });
+});
 
+describe("log errors in GitHub Actions", () => {
   it("should log an error message in GitHub Actions", () => {
     stdoutData = "";
     logError("some error message");
