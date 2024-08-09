@@ -26,6 +26,15 @@ export function setOutput(name: string, value: string): void {
 }
 
 /**
+ * Logs an information message in GitHub Actions.
+ *
+ * @param message - The information message to log.
+ */
+export function logInfo(message: string): void {
+  process.stdout.write(`${message}${os.EOL}`);
+}
+
+/**
  * Logs an error message in GitHub Actions.
  *
  * @param err - The error, which can be of any type.
