@@ -2,7 +2,14 @@ import { jest } from "@jest/globals";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { getInput, logError, logInfo, setOutput } from "./index.js";
+import {
+  beginLogGroup,
+  endLogGroup,
+  getInput,
+  logError,
+  logInfo,
+  setOutput,
+} from "./index.js";
 
 let stdoutData: string;
 beforeAll(() => {
@@ -70,5 +77,19 @@ describe("log errors in GitHub Actions", () => {
     stdoutData = "";
     logError(new Error("some error object"));
     expect(stdoutData).toBe(`::error::some error object${os.EOL}`);
+  });
+});
+
+describe("begin and end log groups in GitHub Actions", () => {
+  it("should begin a log group in GitHub Actions", () => {
+    stdoutData = "";
+    beginLogGroup("some log group");
+    expect(stdoutData).toBe(`::group::some log group${os.EOL}`);
+  });
+
+  it("should end the current log group in GitHub Actions", () => {
+    stdoutData = "";
+    endLogGroup();
+    expect(stdoutData).toBe(`::endgroup::${os.EOL}`);
   });
 });
