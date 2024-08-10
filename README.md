@@ -6,7 +6,7 @@ A minimalistic utility package for developing [GitHub Actions](https://github.co
 
 - ES Module support.
 - Getting inputs and setting outputs.
-- Logging errors.
+- Logging information and errors.
 
 ## Usage Guide
 
@@ -24,6 +24,14 @@ GitHub Actions outputs can be set using the `setOutput` function:
 
 ```ts
 setOutput("output-name", "some value");
+```
+
+### Logging Information
+
+Information can be logged using the `logInfo` function:
+
+```ts
+logInfo("some information");
 ```
 
 ### Logging Errors
