@@ -43,3 +43,19 @@ export function logError(err: unknown): void {
   const message = err instanceof Error ? err.message : String(err);
   process.stdout.write(`::error::${message}${os.EOL}`);
 }
+
+/**
+ * Begins a log group in GitHub Actions.
+ *
+ * @param name - The name of the log group.
+ */
+export function beginLogGroup(name: string): void {
+  process.stdout.write(`::group::${name}${os.EOL}`);
+}
+
+/**
+ * Ends the current log group in GitHub Actions.
+ */
+export function endLogGroup(): void {
+  process.stdout.write(`::endgroup::${os.EOL}`);
+}
