@@ -8,6 +8,7 @@ import {
   getInput,
   logError,
   logInfo,
+  logWarning,
   setOutput,
 } from "./index.js";
 
@@ -63,6 +64,14 @@ describe("log information in GitHub Actions", () => {
     stdoutData = "";
     logInfo("some information message");
     expect(stdoutData).toBe(`some information message${os.EOL}`);
+  });
+});
+
+describe("log warnings in GitHub Actions", () => {
+  it("should log a warning message in GitHub Actions", () => {
+    stdoutData = "";
+    logWarning("some warning message");
+    expect(stdoutData).toBe(`::warning::some warning message${os.EOL}`);
   });
 });
 

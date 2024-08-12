@@ -35,6 +35,15 @@ export function logInfo(message: string): void {
 }
 
 /**
+ * Logs a warning message in GitHub Actions.
+ *
+ * @param message - The warning message to log.
+ */
+export function logWarning(message: string): void {
+  process.stdout.write(`::warning::${message}${os.EOL}`);
+}
+
+/**
  * Logs an error message in GitHub Actions.
  *
  * @param err - The error, which can be of any type.
