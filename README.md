@@ -4,9 +4,10 @@ A minimalistic utility package for developing [GitHub Actions](https://github.co
 
 ## Key Features
 
-- ES Module support.
-- Getting inputs and setting outputs.
-- Logging information and errors.
+- ES Module support
+- Getting inputs and setting outputs
+- Setting environment variables and appending system paths
+- Logging various kinds of messages
 
 ## Usage Guide
 
