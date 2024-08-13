@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import os from "node:os";
+import path from "node:path";
 
 /**
  * Retrieves the value of a GitHub Actions input.
@@ -35,6 +36,19 @@ export function setEnv(name: string, value: string): void {
   fs.appendFileSync(
     process.env["GITHUB_ENV"] as string,
     `${name}=${value}${os.EOL}`,
+  );
+}
+
+/**
+ * Adds a system path to the environment in GitHub Actions.
+ *
+ * @param sysPath - The system path to add.
+ */
+export function addPath(sysPath: string): void {
+  process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
+  fs.appendFileSync(
+    process.env["GITHUB_PATH"] as string,
+    `${sysPath}${os.EOL}`,
   );
 }
 
