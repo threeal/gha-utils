@@ -37,21 +37,15 @@ System paths in the GitHub Actions environment can be added using the `addPath` 
 addPath("path/to/some/executable");
 ```
 
-### Logging Information
+### Logging Messages
 
-Information can be logged using the `logInfo` function:
-
-```ts
-logInfo("some information");
-```
-
-### Logging Errors
-
-Errors can be logged using the `logError` function, which can log errors of any type. This is especially useful for logging caught errors:
+There are various ways to log messages in GitHub Actions, including `logInfo` for logging an informational message, `logWarning` for logging a warning message, `logError` for logging an error message, and `logCommand` for logging a command line message:
 
 ```ts
 try {
-  // Do something
+  logInfo("some information");
+  logWarning("some warning");
+  logCommand("command", ["arg0", "arg1", "arg2"]);
 } catch (err) {
   logError(err);
 }
