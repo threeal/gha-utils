@@ -29,6 +29,14 @@ Environment variables in GitHub Actions can be set using the `setEnv` function, 
 setEnv("SOME_ENV", "some value");
 ```
 
+### Adding System Paths
+
+System paths in the GitHub Actions environment can be added using the `addPath` function, which prepends the given path to the system path. This function is useful if an action is adding a new executable located in a custom path:
+
+```ts
+addPath("path/to/some/executable");
+```
+
 ### Logging Information
 
 Information can be logged using the `logInfo` function:
