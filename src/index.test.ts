@@ -9,6 +9,7 @@ import {
   logError,
   logInfo,
   logWarning,
+  setEnv,
   setOutput,
 } from "./index.js";
 
@@ -49,6 +50,32 @@ describe("set GitHub Actions outputs", () => {
 
     expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
       `some-output=some value${os.EOL}some-other-output=some other value${os.EOL}`,
+    );
+  });
+
+  afterAll(() => {
+    if (fs.existsSync(tempFile)) {
+      fs.rmSync(tempFile);
+    }
+  });
+});
+
+describe("set environment variables in GitHub Actions", () => {
+  let tempFile: string;
+  beforeAll(() => {
+    tempFile = path.join(os.tmpdir(), "env");
+    process.env["GITHUB_ENV"] = tempFile;
+    if (fs.existsSync(tempFile)) {
+      fs.rmSync(tempFile);
+    }
+  });
+
+  it("should set environment variables in GitHub Actions", () => {
+    setEnv("some-env", "some value");
+    setEnv("some-other-env", "some other value");
+
+    expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
+      `some-env=some value${os.EOL}some-other-env=some other value${os.EOL}`,
     );
   });
 

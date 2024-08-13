@@ -26,6 +26,19 @@ export function setOutput(name: string, value: string): void {
 }
 
 /**
+ * Sets the value of an environment variable in GitHub Actions.
+ *
+ * @param name - The name of the environment variable.
+ * @param value - The value of the environment variable.
+ */
+export function setEnv(name: string, value: string): void {
+  fs.appendFileSync(
+    process.env["GITHUB_ENV"] as string,
+    `${name}=${value}${os.EOL}`,
+  );
+}
+
+/**
  * Logs an information message in GitHub Actions.
  *
  * @param message - The information message to log.
