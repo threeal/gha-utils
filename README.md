@@ -51,6 +51,18 @@ try {
 }
 ```
 
+### Grouping Logs
+
+Logs can be grouped using the `beginLogGroup` and `endLogGroup` functions. All messages logged between the `beginLogGroup` and `endLogGroup` functions will be displayed as a group inside a collapsible line:
+
+```ts
+beginLogGroup("some log group");
+logInfo("this message is inside a group");
+endLogGroup();
+
+logInfo("this message is outside a group");
+```
+
 ## License
 
 This project is licensed under the terms of the [MIT License](./LICENSE).
