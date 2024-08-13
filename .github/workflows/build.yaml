@@ -28,6 +28,7 @@ jobs:
       - name: Upload Package
         uses: actions/upload-artifact@v4.3.6
         with:
+          name: package
           path: package.tgz
 
   build-docs:
