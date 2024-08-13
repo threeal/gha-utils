@@ -11,19 +11,13 @@ A minimalistic utility package for developing [GitHub Actions](https://github.co
 
 ## Usage Guide
 
-### Getting Inputs
+### Getting Inputs and Setting Outputs
 
-GitHub Actions inputs can be retrieved using the `getInput` function, which will return a trimmed string or an empty string if the input is not specified:
+GitHub Actions inputs can be retrieved using the `getInput` function, which returns a trimmed string or an empty string if the input is not specified. GitHub Actions outputs can be set using the `setOutput` function:
 
 ```ts
 const input = getInput("input-name");
-```
 
-### Setting Outputs
-
-GitHub Actions outputs can be set using the `setOutput` function:
-
-```ts
 setOutput("output-name", "some value");
 ```
 
