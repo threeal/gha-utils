@@ -3,6 +3,7 @@
 !.git*
 
 dist/
+docs/
 node_modules/
 
 package.tgz
