@@ -3,6 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import {
+  addPath,
   beginLogGroup,
   endLogGroup,
   getInput,
@@ -76,6 +77,38 @@ describe("set environment variables in GitHub Actions", () => {
 
     expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
       `some-env=some value${os.EOL}some-other-env=some other value${os.EOL}`,
+    );
+  });
+
+  afterAll(() => {
+    if (fs.existsSync(tempFile)) {
+      fs.rmSync(tempFile);
+    }
+  });
+});
+
+describe("adds system paths in GitHub Actions", () => {
+  let tempFile: string;
+  beforeAll(() => {
+    tempFile = path.join(os.tmpdir(), "path");
+    process.env["GITHUB_PATH"] = tempFile;
+    if (fs.existsSync(tempFile)) {
+      fs.rmSync(tempFile);
+    }
+  });
+
+  it("should add system paths in GitHub Actions", () => {
+    const prevPath = process.env["PATH"];
+
+    addPath("some-path");
+    addPath("some-other-path");
+
+    expect(process.env["PATH"]).toBe(
+      `some-other-path${path.delimiter}some-path${path.delimiter}${prevPath}`,
+    );
+
+    expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
+      `some-path${os.EOL}some-other-path${os.EOL}`,
     );
   });
 
