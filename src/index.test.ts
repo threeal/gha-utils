@@ -7,6 +7,7 @@ import {
   beginLogGroup,
   endLogGroup,
   getInput,
+  logCommand,
   logError,
   logInfo,
   logWarning,
@@ -149,6 +150,14 @@ describe("log errors in GitHub Actions", () => {
     stdoutData = "";
     logError(new Error("some error object"));
     expect(stdoutData).toBe(`::error::some error object${os.EOL}`);
+  });
+});
+
+describe("log commands in GitHub Actions", () => {
+  it("should log a command in GitHub Actions", () => {
+    stdoutData = "";
+    logCommand("cmd", ["arg0", "arg1", "arg2"]);
+    expect(stdoutData).toBe(`[command]cmd arg0 arg1 arg2${os.EOL}`);
   });
 });
 
