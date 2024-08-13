@@ -82,6 +82,17 @@ export function logError(err: unknown): void {
 }
 
 /**
+ * Logs a command along with its arguments in GitHub Actions.
+ *
+ * @param command - The command to log.
+ * @param args - The arguments of the command.
+ */
+export function logCommand(command: string, args: string[]): void {
+  const message = [command, ...args].join(" ");
+  process.stdout.write(`[command]${message}${os.EOL}`);
+}
+
+/**
  * Begins a log group in GitHub Actions.
  *
  * @param name - The name of the log group.
