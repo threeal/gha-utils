@@ -33,6 +33,7 @@ export function setOutput(name: string, value: string): void {
  * @param value - The value of the environment variable.
  */
 export function setEnv(name: string, value: string): void {
+  process.env[name] = value;
   fs.appendFileSync(
     process.env["GITHUB_ENV"] as string,
     `${name}=${value}${os.EOL}`,

@@ -72,11 +72,14 @@ describe("set environment variables in GitHub Actions", () => {
   });
 
   it("should set environment variables in GitHub Actions", () => {
-    setEnv("some-env", "some value");
-    setEnv("some-other-env", "some other value");
+    setEnv("SOME_ENV", "some value");
+    setEnv("SOME_OTHER_ENV", "some other value");
+
+    expect(process.env.SOME_ENV).toBe("some value");
+    expect(process.env.SOME_OTHER_ENV).toBe("some other value");
 
     expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
-      `some-env=some value${os.EOL}some-other-env=some other value${os.EOL}`,
+      `SOME_ENV=some value${os.EOL}SOME_OTHER_ENV=some other value${os.EOL}`,
     );
   });
 
