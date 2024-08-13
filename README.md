@@ -21,6 +21,14 @@ const input = getInput("input-name");
 setOutput("output-name", "some value");
 ```
 
+### Setting Environment Variables
+
+Environment variables in GitHub Actions can be set using the `setEnv` function, which sets the environment variables in the current step and exports them to the next steps:
+
+```ts
+setEnv("SOME_ENV", "some value");
+```
+
 ### Logging Information
 
 Information can be logged using the `logInfo` function:
