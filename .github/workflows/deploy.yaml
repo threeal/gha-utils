@@ -6,7 +6,7 @@ on:
 jobs:
   deploy-docs:
     name: Deploy Documentation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       id-token: write
       pages: write
