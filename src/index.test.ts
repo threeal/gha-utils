@@ -5,6 +5,7 @@ import path from "node:path";
 
 import {
   addPath,
+  addPathSync,
   beginLogGroup,
   endLogGroup,
   getInput,
@@ -13,7 +14,9 @@ import {
   logInfo,
   logWarning,
   setEnv,
+  setEnvSync,
   setOutput,
+  setOutputSync,
 } from "./index.js";
 
 let stdoutData: string;
@@ -39,7 +42,7 @@ describe("retrieve GitHub Actions inputs", () => {
 
 describe("set GitHub Actions outputs", () => {
   let tempFile: string;
-  beforeAll(async () => {
+  beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "output");
     process.env["GITHUB_OUTPUT"] = tempFile;
     try {
@@ -66,7 +69,17 @@ describe("set GitHub Actions outputs", () => {
     ]);
   });
 
-  afterAll(async () => {
+  it("should set GitHub Actions outputs synchronously", async () => {
+    setOutputSync("some-output", "some value");
+    setOutputSync("some-other-output", "some other value");
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(
+      `some-output=some value${os.EOL}some-other-output=some other value${os.EOL}`,
+    );
+  });
+
+  afterEach(async () => {
     try {
       await fsPromises.rm(tempFile);
     } catch (err) {
@@ -77,7 +90,7 @@ describe("set GitHub Actions outputs", () => {
 
 describe("set environment variables in GitHub Actions", () => {
   let tempFile: string;
-  beforeAll(async () => {
+  beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "env");
     process.env["GITHUB_ENV"] = tempFile;
     try {
@@ -107,7 +120,20 @@ describe("set environment variables in GitHub Actions", () => {
     ]);
   });
 
-  afterAll(async () => {
+  it("should set environment variables in GitHub Actions synchronously", async () => {
+    setEnvSync("SOME_ENV", "some value");
+    setEnvSync("SOME_OTHER_ENV", "some other value");
+
+    expect(process.env.SOME_ENV).toBe("some value");
+    expect(process.env.SOME_OTHER_ENV).toBe("some other value");
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(
+      `SOME_ENV=some value${os.EOL}SOME_OTHER_ENV=some other value${os.EOL}`,
+    );
+  });
+
+  afterEach(async () => {
     try {
       await fsPromises.rm(tempFile);
     } catch (err) {
@@ -118,7 +144,7 @@ describe("set environment variables in GitHub Actions", () => {
 
 describe("adds system paths in GitHub Actions", () => {
   let tempFile: string;
-  beforeAll(async () => {
+  beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "path");
     process.env["GITHUB_PATH"] = tempFile;
     try {
@@ -144,7 +170,20 @@ describe("adds system paths in GitHub Actions", () => {
     expect(lines).toEqual(["some-other-path", "some-path"]);
   });
 
-  afterAll(async () => {
+  it("should add system paths in GitHub Actions synchronously", async () => {
+    addPathSync("some-path");
+    addPathSync("some-other-path");
+
+    const sysPaths = (process.env["PATH"] ?? "")
+      .split(path.delimiter)
+      .slice(0, 2);
+    expect(sysPaths).toEqual(["some-other-path", "some-path"]);
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(`some-path${os.EOL}some-other-path${os.EOL}`);
+  });
+
+  afterEach(async () => {
     try {
       await fsPromises.rm(tempFile);
     } catch (err) {

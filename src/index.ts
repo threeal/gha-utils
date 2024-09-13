@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import fsPromises from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -28,6 +29,19 @@ export async function setOutput(name: string, value: string): Promise<void> {
 }
 
 /**
+ * Sets the value of a GitHub Actions output synchronously.
+ *
+ * @param name - The name of the GitHub Actions output.
+ * @param value - The value to set for the GitHub Actions output.
+ */
+export function setOutputSync(name: string, value: string): void {
+  fs.appendFileSync(
+    process.env["GITHUB_OUTPUT"] as string,
+    `${name}=${value}${os.EOL}`,
+  );
+}
+
+/**
  * Sets the value of an environment variable in GitHub Actions.
  *
  * @param name - The name of the environment variable.
@@ -44,6 +58,20 @@ export async function setEnv(name: string, value: string): Promise<void> {
 }
 
 /**
+ * Sets the value of an environment variable in GitHub Actions synchronously.
+ *
+ * @param name - The name of the environment variable.
+ * @param value - The value to set for the environment variable.
+ */
+export function setEnvSync(name: string, value: string): void {
+  process.env[name] = value;
+  fs.appendFileSync(
+    process.env["GITHUB_ENV"] as string,
+    `${name}=${value}${os.EOL}`,
+  );
+}
+
+/**
  * Adds a system path to the environment in GitHub Actions.
  *
  * @param sysPath - The system path to add to the environment.
@@ -52,6 +80,19 @@ export async function setEnv(name: string, value: string): Promise<void> {
 export async function addPath(sysPath: string): Promise<void> {
   process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
   await fsPromises.appendFile(
+    process.env["GITHUB_PATH"] as string,
+    `${sysPath}${os.EOL}`,
+  );
+}
+
+/**
+ * Adds a system path to the environment in GitHub Actions synchronously.
+ *
+ * @param sysPath - The system path to add to the environment.
+ */
+export function addPathSync(sysPath: string): void {
+  process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
+  fs.appendFileSync(
     process.env["GITHUB_PATH"] as string,
     `${sysPath}${os.EOL}`,
   );

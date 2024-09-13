@@ -13,28 +13,31 @@ A minimalistic utility package for developing [GitHub Actions](https://github.co
 
 ### Getting Inputs and Setting Outputs
 
-GitHub Actions inputs can be retrieved using the `getInput` function, which returns a trimmed string or an empty string if the input is not specified. GitHub Actions outputs can be set using the `setOutput` function:
+GitHub Actions inputs can be retrieved using the `getInput` function, which returns a trimmed string or an empty string if the input is not specified. GitHub Actions outputs can be set using the `setOutput` or `setOutputSync` functions:
 
 ```ts
 const input = getInput("input-name");
 
 await setOutput("output-name", "some value");
+setOutputSync("other-output-name", "some other value");
 ```
 
 ### Setting Environment Variables
 
-Environment variables in GitHub Actions can be set using the `setEnv` function, which sets the environment variables in the current step and exports them to the next steps:
+Environment variables in GitHub Actions can be set using the `setEnv` or `setEnvSync` functions, which sets the environment variables in the current step and exports them to the next steps:
 
 ```ts
 await setEnv("SOME_ENV", "some value");
+setEnvSync("SOME_OTHER_ENV", "some other value");
 ```
 
 ### Adding System Paths
 
-System paths in the GitHub Actions environment can be added using the `addPath` function, which prepends the given path to the system path. This function is useful if an action is adding a new executable located in a custom path:
+System paths in the GitHub Actions environment can be added using the `addPath` or `addPathSync` functions, which prepends the given path to the system path. These functions are useful if an action is adding a new executable located in a custom path:
 
 ```ts
 await addPath("path/to/some/executable");
+addPathSync("path/to/some/executable");
 ```
 
 ### Logging Messages
