@@ -1,7 +1,9 @@
 import { jest } from "@jest/globals";
 import fs from "node:fs";
+import fsPromises from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+
 import {
   addPath,
   beginLogGroup,
@@ -38,26 +40,38 @@ describe("retrieve GitHub Actions inputs", () => {
 
 describe("set GitHub Actions outputs", () => {
   let tempFile: string;
-  beforeAll(() => {
+  beforeAll(async () => {
     tempFile = path.join(os.tmpdir(), "output");
     process.env["GITHUB_OUTPUT"] = tempFile;
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 
-  it("should set GitHub Actions outputs", () => {
-    setOutput("some-output", "some value");
-    setOutput("some-other-output", "some other value");
+  it("should set GitHub Actions outputs", async () => {
+    await Promise.all([
+      setOutput("some-output", "some value"),
+      setOutput("some-other-output", "some other value"),
+    ]);
 
-    expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
-      `some-output=some value${os.EOL}some-other-output=some other value${os.EOL}`,
-    );
+    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+      .split(os.EOL)
+      .filter((line) => line !== "")
+      .sort();
+
+    expect(lines).toEqual([
+      "some-other-output=some other value",
+      "some-output=some value",
+    ]);
   });
 
-  afterAll(() => {
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+  afterAll(async () => {
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 });

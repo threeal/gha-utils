@@ -18,7 +18,7 @@ GitHub Actions inputs can be retrieved using the `getInput` function, which retu
 ```ts
 const input = getInput("input-name");
 
-setOutput("output-name", "some value");
+await setOutput("output-name", "some value");
 ```
 
 ### Setting Environment Variables
