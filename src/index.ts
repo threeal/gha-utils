@@ -132,7 +132,7 @@ export function logError(err: unknown): void {
  * @param command - The command to log.
  * @param args - The arguments of the command.
  */
-export function logCommand(command: string, args: readonly string[]): void {
+export function logCommand(command: string, ...args: string[]): void {
   const message = [command, ...args].join(" ");
   process.stdout.write(`[command]${message}${os.EOL}`);
 }
