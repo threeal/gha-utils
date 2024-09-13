@@ -8,7 +8,7 @@ import {
   logError,
   logInfo,
   logWarning,
-} from "./index.js";
+} from "./log.js";
 
 let stdoutData: string;
 beforeAll(() => {
