@@ -32,11 +32,13 @@ export async function setOutput(name: string, value: string): Promise<void> {
  * Sets the value of an environment variable in GitHub Actions.
  *
  * @param name - The name of the environment variable.
- * @param value - The value of the environment variable.
+ * @param value - The value to set for the environment variable.
+ * @returns A promise that resolves when the environment variable is
+ *          successfully set.
  */
-export function setEnv(name: string, value: string): void {
+export async function setEnv(name: string, value: string): Promise<void> {
   process.env[name] = value;
-  fs.appendFileSync(
+  await fsPromises.appendFile(
     process.env["GITHUB_ENV"] as string,
     `${name}=${value}${os.EOL}`,
   );
