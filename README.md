@@ -18,8 +18,8 @@ GitHub Actions inputs can be retrieved using the `getInput` function, which retu
 ```ts
 const input = getInput("input-name");
 
-await setOutput("output-name", "some value");
-setOutputSync("other-output-name", "some other value");
+await setOutput("output-name", "a value");
+setOutputSync("another-output-name", "another value");
 ```
 
 ### Setting Environment Variables
@@ -27,8 +27,8 @@ setOutputSync("other-output-name", "some other value");
 Environment variables in GitHub Actions can be set using the `setEnv` or `setEnvSync` functions, which sets the environment variables in the current step and exports them to the next steps:
 
 ```ts
-await setEnv("SOME_ENV", "some value");
-setEnvSync("SOME_OTHER_ENV", "some other value");
+await setEnv("AN_ENV", "a value");
+setEnvSync("ANOTHER_ENV", "another value");
 ```
 
 ### Adding System Paths
@@ -36,8 +36,8 @@ setEnvSync("SOME_OTHER_ENV", "some other value");
 System paths in the GitHub Actions environment can be added using the `addPath` or `addPathSync` functions, which prepends the given path to the system path. These functions are useful if an action is adding a new executable located in a custom path:
 
 ```ts
-await addPath("path/to/some/executable");
-addPathSync("path/to/some/executable");
+await addPath("path/to/an/executable");
+addPathSync("path/to/another/executable");
 ```
 
 ### Logging Messages
@@ -46,8 +46,8 @@ There are various ways to log messages in GitHub Actions, including `logInfo` fo
 
 ```ts
 try {
-  logInfo("some information");
-  logWarning("some warning");
+  logInfo("an information");
+  logWarning("a warning");
   logCommand("command", "arg0", "arg1", "arg2");
 } catch (err) {
   logError(err);
@@ -59,7 +59,7 @@ try {
 Logs can be grouped using the `beginLogGroup` and `endLogGroup` functions. All messages logged between the `beginLogGroup` and `endLogGroup` functions will be displayed as a group inside a collapsible line:
 
 ```ts
-beginLogGroup("some log group");
+beginLogGroup("a log group");
 logInfo("this message is inside a group");
 endLogGroup();
 
