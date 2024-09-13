@@ -18,7 +18,7 @@ GitHub Actions inputs can be retrieved using the `getInput` function, which retu
 ```ts
 const input = getInput("input-name");
 
-setOutput("output-name", "some value");
+await setOutput("output-name", "some value");
 ```
 
 ### Setting Environment Variables
@@ -26,7 +26,7 @@ setOutput("output-name", "some value");
 Environment variables in GitHub Actions can be set using the `setEnv` function, which sets the environment variables in the current step and exports them to the next steps:
 
 ```ts
-setEnv("SOME_ENV", "some value");
+await setEnv("SOME_ENV", "some value");
 ```
 
 ### Adding System Paths
@@ -34,7 +34,7 @@ setEnv("SOME_ENV", "some value");
 System paths in the GitHub Actions environment can be added using the `addPath` function, which prepends the given path to the system path. This function is useful if an action is adding a new executable located in a custom path:
 
 ```ts
-addPath("path/to/some/executable");
+await addPath("path/to/some/executable");
 ```
 
 ### Logging Messages

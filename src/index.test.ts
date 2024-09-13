@@ -1,7 +1,8 @@
 import { jest } from "@jest/globals";
-import fs from "node:fs";
+import fsPromises from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+
 import {
   addPath,
   beginLogGroup,
@@ -38,87 +39,116 @@ describe("retrieve GitHub Actions inputs", () => {
 
 describe("set GitHub Actions outputs", () => {
   let tempFile: string;
-  beforeAll(() => {
+  beforeAll(async () => {
     tempFile = path.join(os.tmpdir(), "output");
     process.env["GITHUB_OUTPUT"] = tempFile;
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 
-  it("should set GitHub Actions outputs", () => {
-    setOutput("some-output", "some value");
-    setOutput("some-other-output", "some other value");
+  it("should set GitHub Actions outputs", async () => {
+    await Promise.all([
+      setOutput("some-output", "some value"),
+      setOutput("some-other-output", "some other value"),
+    ]);
 
-    expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
-      `some-output=some value${os.EOL}some-other-output=some other value${os.EOL}`,
-    );
+    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+      .split(os.EOL)
+      .filter((line) => line !== "")
+      .sort();
+
+    expect(lines).toEqual([
+      "some-other-output=some other value",
+      "some-output=some value",
+    ]);
   });
 
-  afterAll(() => {
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+  afterAll(async () => {
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 });
 
 describe("set environment variables in GitHub Actions", () => {
   let tempFile: string;
-  beforeAll(() => {
+  beforeAll(async () => {
     tempFile = path.join(os.tmpdir(), "env");
     process.env["GITHUB_ENV"] = tempFile;
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 
-  it("should set environment variables in GitHub Actions", () => {
-    setEnv("SOME_ENV", "some value");
-    setEnv("SOME_OTHER_ENV", "some other value");
+  it("should set environment variables in GitHub Actions", async () => {
+    await Promise.all([
+      setEnv("SOME_ENV", "some value"),
+      setEnv("SOME_OTHER_ENV", "some other value"),
+    ]);
 
     expect(process.env.SOME_ENV).toBe("some value");
     expect(process.env.SOME_OTHER_ENV).toBe("some other value");
 
-    expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
-      `SOME_ENV=some value${os.EOL}SOME_OTHER_ENV=some other value${os.EOL}`,
-    );
+    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+      .split(os.EOL)
+      .filter((line) => line !== "")
+      .sort();
+
+    expect(lines).toEqual([
+      "SOME_ENV=some value",
+      "SOME_OTHER_ENV=some other value",
+    ]);
   });
 
-  afterAll(() => {
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+  afterAll(async () => {
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 });
 
 describe("adds system paths in GitHub Actions", () => {
   let tempFile: string;
-  beforeAll(() => {
+  beforeAll(async () => {
     tempFile = path.join(os.tmpdir(), "path");
     process.env["GITHUB_PATH"] = tempFile;
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 
-  it("should add system paths in GitHub Actions", () => {
-    const prevPath = process.env["PATH"];
+  it("should add system paths in GitHub Actions", async () => {
+    await Promise.all([addPath("some-path"), addPath("some-other-path")]);
 
-    addPath("some-path");
-    addPath("some-other-path");
+    const sysPaths = (process.env["PATH"] ?? "")
+      .split(path.delimiter)
+      .slice(0, 2)
+      .sort();
+    expect(sysPaths).toEqual(["some-other-path", "some-path"]);
 
-    expect(process.env["PATH"]).toBe(
-      `some-other-path${path.delimiter}some-path${path.delimiter}${prevPath}`,
-    );
-
-    expect(fs.readFileSync(tempFile, { encoding: "utf-8" })).toBe(
-      `some-path${os.EOL}some-other-path${os.EOL}`,
-    );
+    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+      .split(os.EOL)
+      .filter((line) => line !== "")
+      .sort();
+    expect(lines).toEqual(["some-other-path", "some-path"]);
   });
 
-  afterAll(() => {
-    if (fs.existsSync(tempFile)) {
-      fs.rmSync(tempFile);
+  afterAll(async () => {
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
     }
   });
 });

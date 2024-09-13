@@ -8,4 +8,10 @@ export default [
   {
     ignores: [".*", "dist", "docs"],
   },
+  {
+    files: ["**/*.test.ts"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ];
