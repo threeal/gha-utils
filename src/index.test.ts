@@ -46,12 +46,13 @@ describe("retrieve environment variables", () => {
 
 describe("retrieve GitHub Actions inputs", () => {
   it("should retrieve a GitHub Actions input", () => {
-    process.env["INPUT_SOME-INPUT"] = " some value  ";
-    expect(getInput("some-input")).toBe("some value");
+    process.env["INPUT_AN-INPUT"] = " a value  ";
+    expect(getInput("an-input")).toBe("a value");
   });
 
-  it("should retrieve an empty GitHub Actions input", () => {
-    expect(getInput("some-empty-input")).toBe("");
+  it("should retrieve an undefined GitHub Actions input", () => {
+    delete process.env["INPUT_AN-UNDEFINED-INPUT"];
+    expect(getInput("an-undefined-input")).toBe("");
   });
 });
 
@@ -69,8 +70,8 @@ describe("set GitHub Actions outputs", () => {
 
   it("should set GitHub Actions outputs", async () => {
     await Promise.all([
-      setOutput("some-output", "some value"),
-      setOutput("some-other-output", "some other value"),
+      setOutput("an-output", "a value"),
+      setOutput("another-output", "another value"),
     ]);
 
     const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
@@ -79,18 +80,18 @@ describe("set GitHub Actions outputs", () => {
       .sort();
 
     expect(lines).toEqual([
-      "some-other-output=some other value",
-      "some-output=some value",
+      "an-output=a value",
+      "another-output=another value",
     ]);
   });
 
   it("should set GitHub Actions outputs synchronously", async () => {
-    setOutputSync("some-output", "some value");
-    setOutputSync("some-other-output", "some other value");
+    setOutputSync("an-output", "a value");
+    setOutputSync("another-output", "another value");
 
     const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
     expect(content).toBe(
-      `some-output=some value${os.EOL}some-other-output=some other value${os.EOL}`,
+      `an-output=a value${os.EOL}another-output=another value${os.EOL}`,
     );
   });
 
@@ -117,34 +118,31 @@ describe("set environment variables in GitHub Actions", () => {
 
   it("should set environment variables in GitHub Actions", async () => {
     await Promise.all([
-      setEnv("SOME_ENV", "some value"),
-      setEnv("SOME_OTHER_ENV", "some other value"),
+      setEnv("AN_ENV", "a value"),
+      setEnv("ANOTHER_ENV", "another value"),
     ]);
 
-    expect(process.env.SOME_ENV).toBe("some value");
-    expect(process.env.SOME_OTHER_ENV).toBe("some other value");
+    expect(process.env.AN_ENV).toBe("a value");
+    expect(process.env.ANOTHER_ENV).toBe("another value");
 
     const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
       .split(os.EOL)
       .filter((line) => line !== "")
       .sort();
 
-    expect(lines).toEqual([
-      "SOME_ENV=some value",
-      "SOME_OTHER_ENV=some other value",
-    ]);
+    expect(lines).toEqual(["ANOTHER_ENV=another value", "AN_ENV=a value"]);
   });
 
   it("should set environment variables in GitHub Actions synchronously", async () => {
-    setEnvSync("SOME_ENV", "some value");
-    setEnvSync("SOME_OTHER_ENV", "some other value");
+    setEnvSync("AN_ENV", "a value");
+    setEnvSync("ANOTHER_ENV", "another value");
 
-    expect(process.env.SOME_ENV).toBe("some value");
-    expect(process.env.SOME_OTHER_ENV).toBe("some other value");
+    expect(process.env.AN_ENV).toBe("a value");
+    expect(process.env.ANOTHER_ENV).toBe("another value");
 
     const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
     expect(content).toBe(
-      `SOME_ENV=some value${os.EOL}SOME_OTHER_ENV=some other value${os.EOL}`,
+      `AN_ENV=a value${os.EOL}ANOTHER_ENV=another value${os.EOL}`,
     );
   });
 
@@ -170,32 +168,32 @@ describe("adds system paths in GitHub Actions", () => {
   });
 
   it("should add system paths in GitHub Actions", async () => {
-    await Promise.all([addPath("some-path"), addPath("some-other-path")]);
+    await Promise.all([addPath("a-path"), addPath("another-path")]);
 
     const sysPaths = (process.env["PATH"] ?? "")
       .split(path.delimiter)
       .slice(0, 2)
       .sort();
-    expect(sysPaths).toEqual(["some-other-path", "some-path"]);
+    expect(sysPaths).toEqual(["a-path", "another-path"]);
 
     const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
       .split(os.EOL)
       .filter((line) => line !== "")
       .sort();
-    expect(lines).toEqual(["some-other-path", "some-path"]);
+    expect(lines).toEqual(["a-path", "another-path"]);
   });
 
   it("should add system paths in GitHub Actions synchronously", async () => {
-    addPathSync("some-path");
-    addPathSync("some-other-path");
+    addPathSync("a-path");
+    addPathSync("another-path");
 
     const sysPaths = (process.env["PATH"] ?? "")
       .split(path.delimiter)
       .slice(0, 2);
-    expect(sysPaths).toEqual(["some-other-path", "some-path"]);
+    expect(sysPaths).toEqual(["another-path", "a-path"]);
 
     const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
-    expect(content).toBe(`some-path${os.EOL}some-other-path${os.EOL}`);
+    expect(content).toBe(`a-path${os.EOL}another-path${os.EOL}`);
   });
 
   afterEach(async () => {
@@ -210,30 +208,30 @@ describe("adds system paths in GitHub Actions", () => {
 describe("log information in GitHub Actions", () => {
   it("should log an information message in GitHub Actions", () => {
     stdoutData = "";
-    logInfo("some information message");
-    expect(stdoutData).toBe(`some information message${os.EOL}`);
+    logInfo("an information message");
+    expect(stdoutData).toBe(`an information message${os.EOL}`);
   });
 });
 
 describe("log warnings in GitHub Actions", () => {
   it("should log a warning message in GitHub Actions", () => {
     stdoutData = "";
-    logWarning("some warning message");
-    expect(stdoutData).toBe(`::warning::some warning message${os.EOL}`);
+    logWarning("a warning message");
+    expect(stdoutData).toBe(`::warning::a warning message${os.EOL}`);
   });
 });
 
 describe("log errors in GitHub Actions", () => {
   it("should log an error message in GitHub Actions", () => {
     stdoutData = "";
-    logError("some error message");
-    expect(stdoutData).toBe(`::error::some error message${os.EOL}`);
+    logError("an error message");
+    expect(stdoutData).toBe(`::error::an error message${os.EOL}`);
   });
 
   it("should log an error object in GitHub Actions", () => {
     stdoutData = "";
-    logError(new Error("some error object"));
-    expect(stdoutData).toBe(`::error::some error object${os.EOL}`);
+    logError(new Error("an error object"));
+    expect(stdoutData).toBe(`::error::an error object${os.EOL}`);
   });
 });
 
@@ -248,8 +246,8 @@ describe("log commands in GitHub Actions", () => {
 describe("begin and end log groups in GitHub Actions", () => {
   it("should begin a log group in GitHub Actions", () => {
     stdoutData = "";
-    beginLogGroup("some log group");
-    expect(stdoutData).toBe(`::group::some log group${os.EOL}`);
+    beginLogGroup("a log group");
+    expect(stdoutData).toBe(`::group::a log group${os.EOL}`);
   });
 
   it("should end the current log group in GitHub Actions", () => {
