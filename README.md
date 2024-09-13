@@ -33,10 +33,11 @@ setEnvSync("SOME_OTHER_ENV", "some other value");
 
 ### Adding System Paths
 
-System paths in the GitHub Actions environment can be added using the `addPath` function, which prepends the given path to the system path. This function is useful if an action is adding a new executable located in a custom path:
+System paths in the GitHub Actions environment can be added using the `addPath` or `addPathSync` functions, which prepends the given path to the system path. These functions are useful if an action is adding a new executable located in a custom path:
 
 ```ts
 await addPath("path/to/some/executable");
+addPathSync("path/to/some/executable");
 ```
 
 ### Logging Messages

@@ -5,6 +5,7 @@ import path from "node:path";
 
 import {
   addPath,
+  addPathSync,
   beginLogGroup,
   endLogGroup,
   getInput,
@@ -143,7 +144,7 @@ describe("set environment variables in GitHub Actions", () => {
 
 describe("adds system paths in GitHub Actions", () => {
   let tempFile: string;
-  beforeAll(async () => {
+  beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "path");
     process.env["GITHUB_PATH"] = tempFile;
     try {
@@ -169,7 +170,20 @@ describe("adds system paths in GitHub Actions", () => {
     expect(lines).toEqual(["some-other-path", "some-path"]);
   });
 
-  afterAll(async () => {
+  it("should add system paths in GitHub Actions synchronously", async () => {
+    addPathSync("some-path");
+    addPathSync("some-other-path");
+
+    const sysPaths = (process.env["PATH"] ?? "")
+      .split(path.delimiter)
+      .slice(0, 2);
+    expect(sysPaths).toEqual(["some-other-path", "some-path"]);
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(`some-path${os.EOL}some-other-path${os.EOL}`);
+  });
+
+  afterEach(async () => {
     try {
       await fsPromises.rm(tempFile);
     } catch (err) {

@@ -86,6 +86,19 @@ export async function addPath(sysPath: string): Promise<void> {
 }
 
 /**
+ * Adds a system path to the environment in GitHub Actions synchronously.
+ *
+ * @param sysPath - The system path to add to the environment.
+ */
+export function addPathSync(sysPath: string): void {
+  process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
+  fs.appendFileSync(
+    process.env["GITHUB_PATH"] as string,
+    `${sysPath}${os.EOL}`,
+  );
+}
+
+/**
  * Logs an information message in GitHub Actions.
  *
  * @param message - The information message to log.
