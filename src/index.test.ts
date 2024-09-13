@@ -14,6 +14,7 @@ import {
   logWarning,
   setEnv,
   setOutput,
+  setOutputSync,
 } from "./index.js";
 
 let stdoutData: string;
@@ -39,7 +40,7 @@ describe("retrieve GitHub Actions inputs", () => {
 
 describe("set GitHub Actions outputs", () => {
   let tempFile: string;
-  beforeAll(async () => {
+  beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "output");
     process.env["GITHUB_OUTPUT"] = tempFile;
     try {
@@ -66,7 +67,17 @@ describe("set GitHub Actions outputs", () => {
     ]);
   });
 
-  afterAll(async () => {
+  it("should set GitHub Actions outputs synchronously", async () => {
+    setOutputSync("some-output", "some value");
+    setOutputSync("some-other-output", "some other value");
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(
+      `some-output=some value${os.EOL}some-other-output=some other value${os.EOL}`,
+    );
+  });
+
+  afterEach(async () => {
     try {
       await fsPromises.rm(tempFile);
     } catch (err) {

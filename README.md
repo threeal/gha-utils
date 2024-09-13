@@ -13,12 +13,13 @@ A minimalistic utility package for developing [GitHub Actions](https://github.co
 
 ### Getting Inputs and Setting Outputs
 
-GitHub Actions inputs can be retrieved using the `getInput` function, which returns a trimmed string or an empty string if the input is not specified. GitHub Actions outputs can be set using the `setOutput` function:
+GitHub Actions inputs can be retrieved using the `getInput` function, which returns a trimmed string or an empty string if the input is not specified. GitHub Actions outputs can be set using the `setOutput` or `setOutputSync` functions:
 
 ```ts
 const input = getInput("input-name");
 
 await setOutput("output-name", "some value");
+setOutputSync("other-output-name", "some other value");
 ```
 
 ### Setting Environment Variables

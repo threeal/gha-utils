@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import fsPromises from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -22,6 +23,19 @@ export function getInput(name: string): string {
  */
 export async function setOutput(name: string, value: string): Promise<void> {
   await fsPromises.appendFile(
+    process.env["GITHUB_OUTPUT"] as string,
+    `${name}=${value}${os.EOL}`,
+  );
+}
+
+/**
+ * Sets the value of a GitHub Actions output synchronously.
+ *
+ * @param name - The name of the GitHub Actions output.
+ * @param value - The value to set for the GitHub Actions output.
+ */
+export function setOutputSync(name: string, value: string): void {
+  fs.appendFileSync(
     process.env["GITHUB_OUTPUT"] as string,
     `${name}=${value}${os.EOL}`,
   );
