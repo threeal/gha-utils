@@ -13,6 +13,7 @@ import {
   logInfo,
   logWarning,
   setEnv,
+  setEnvSync,
   setOutput,
   setOutputSync,
 } from "./index.js";
@@ -88,7 +89,7 @@ describe("set GitHub Actions outputs", () => {
 
 describe("set environment variables in GitHub Actions", () => {
   let tempFile: string;
-  beforeAll(async () => {
+  beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "env");
     process.env["GITHUB_ENV"] = tempFile;
     try {
@@ -118,7 +119,20 @@ describe("set environment variables in GitHub Actions", () => {
     ]);
   });
 
-  afterAll(async () => {
+  it("should set environment variables in GitHub Actions synchronously", async () => {
+    setEnvSync("SOME_ENV", "some value");
+    setEnvSync("SOME_OTHER_ENV", "some other value");
+
+    expect(process.env.SOME_ENV).toBe("some value");
+    expect(process.env.SOME_OTHER_ENV).toBe("some other value");
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(
+      `SOME_ENV=some value${os.EOL}SOME_OTHER_ENV=some other value${os.EOL}`,
+    );
+  });
+
+  afterEach(async () => {
     try {
       await fsPromises.rm(tempFile);
     } catch (err) {

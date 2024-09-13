@@ -58,6 +58,20 @@ export async function setEnv(name: string, value: string): Promise<void> {
 }
 
 /**
+ * Sets the value of an environment variable in GitHub Actions synchronously.
+ *
+ * @param name - The name of the environment variable.
+ * @param value - The value to set for the environment variable.
+ */
+export function setEnvSync(name: string, value: string): void {
+  process.env[name] = value;
+  fs.appendFileSync(
+    process.env["GITHUB_ENV"] as string,
+    `${name}=${value}${os.EOL}`,
+  );
+}
+
+/**
  * Adds a system path to the environment in GitHub Actions.
  *
  * @param sysPath - The system path to add to the environment.

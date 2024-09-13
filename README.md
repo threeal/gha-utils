@@ -24,10 +24,11 @@ setOutputSync("other-output-name", "some other value");
 
 ### Setting Environment Variables
 
-Environment variables in GitHub Actions can be set using the `setEnv` function, which sets the environment variables in the current step and exports them to the next steps:
+Environment variables in GitHub Actions can be set using the `setEnv` or `setEnvSync` functions, which sets the environment variables in the current step and exports them to the next steps:
 
 ```ts
 await setEnv("SOME_ENV", "some value");
+setEnvSync("SOME_OTHER_ENV", "some other value");
 ```
 
 ### Adding System Paths
