@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import fsPromises from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -47,11 +46,12 @@ export async function setEnv(name: string, value: string): Promise<void> {
 /**
  * Adds a system path to the environment in GitHub Actions.
  *
- * @param sysPath - The system path to add.
+ * @param sysPath - The system path to add to the environment.
+ * @returns A promise that resolves when the system path is successfully added.
  */
-export function addPath(sysPath: string): void {
+export async function addPath(sysPath: string): Promise<void> {
   process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
-  fs.appendFileSync(
+  await fsPromises.appendFile(
     process.env["GITHUB_PATH"] as string,
     `${sysPath}${os.EOL}`,
   );

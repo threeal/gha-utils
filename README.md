@@ -34,7 +34,7 @@ await setEnv("SOME_ENV", "some value");
 System paths in the GitHub Actions environment can be added using the `addPath` function, which prepends the given path to the system path. This function is useful if an action is adding a new executable located in a custom path:
 
 ```ts
-addPath("path/to/some/executable");
+await addPath("path/to/some/executable");
 ```
 
 ### Logging Messages
