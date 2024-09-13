@@ -4,6 +4,21 @@ import os from "node:os";
 import path from "node:path";
 
 /**
+ * Retrieves the value of an environment variable.
+ *
+ * @param name - The name of the environment variable.
+ * @returns The value of the environment variable.
+ * @throws Error if the environment variable is not defined.
+ */
+export function mustGetEnvironment(name: string): string {
+  const value = process.env[name];
+  if (value === undefined) {
+    throw new Error(`the ${name} environment variable must be defined`);
+  }
+  return value;
+}
+
+/**
  * Retrieves the value of a GitHub Actions input.
  *
  * @param name - The name of the GitHub Actions input.
@@ -22,10 +37,8 @@ export function getInput(name: string): string {
  * @returns A promise that resolves when the value is successfully set.
  */
 export async function setOutput(name: string, value: string): Promise<void> {
-  await fsPromises.appendFile(
-    process.env["GITHUB_OUTPUT"] as string,
-    `${name}=${value}${os.EOL}`,
-  );
+  const filePath = mustGetEnvironment("GITHUB_OUTPUT");
+  await fsPromises.appendFile(filePath, `${name}=${value}${os.EOL}`);
 }
 
 /**
@@ -35,10 +48,8 @@ export async function setOutput(name: string, value: string): Promise<void> {
  * @param value - The value to set for the GitHub Actions output.
  */
 export function setOutputSync(name: string, value: string): void {
-  fs.appendFileSync(
-    process.env["GITHUB_OUTPUT"] as string,
-    `${name}=${value}${os.EOL}`,
-  );
+  const filePath = mustGetEnvironment("GITHUB_OUTPUT");
+  fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`);
 }
 
 /**
@@ -51,10 +62,8 @@ export function setOutputSync(name: string, value: string): void {
  */
 export async function setEnv(name: string, value: string): Promise<void> {
   process.env[name] = value;
-  await fsPromises.appendFile(
-    process.env["GITHUB_ENV"] as string,
-    `${name}=${value}${os.EOL}`,
-  );
+  const filePath = mustGetEnvironment("GITHUB_ENV");
+  await fsPromises.appendFile(filePath, `${name}=${value}${os.EOL}`);
 }
 
 /**
@@ -65,10 +74,8 @@ export async function setEnv(name: string, value: string): Promise<void> {
  */
 export function setEnvSync(name: string, value: string): void {
   process.env[name] = value;
-  fs.appendFileSync(
-    process.env["GITHUB_ENV"] as string,
-    `${name}=${value}${os.EOL}`,
-  );
+  const filePath = mustGetEnvironment("GITHUB_ENV");
+  fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`);
 }
 
 /**
@@ -79,10 +86,8 @@ export function setEnvSync(name: string, value: string): void {
  */
 export async function addPath(sysPath: string): Promise<void> {
   process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
-  await fsPromises.appendFile(
-    process.env["GITHUB_PATH"] as string,
-    `${sysPath}${os.EOL}`,
-  );
+  const filePath = mustGetEnvironment("GITHUB_PATH");
+  await fsPromises.appendFile(filePath, `${sysPath}${os.EOL}`);
 }
 
 /**
@@ -92,10 +97,8 @@ export async function addPath(sysPath: string): Promise<void> {
  */
 export function addPathSync(sysPath: string): void {
   process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
-  fs.appendFileSync(
-    process.env["GITHUB_PATH"] as string,
-    `${sysPath}${os.EOL}`,
-  );
+  const filePath = mustGetEnvironment("GITHUB_PATH");
+  fs.appendFileSync(filePath, `${sysPath}${os.EOL}`);
 }
 
 /**
