@@ -13,6 +13,7 @@ import {
   logError,
   logInfo,
   logWarning,
+  mustGetEnvironment,
   setEnv,
   setEnvSync,
   setOutput,
@@ -27,6 +28,20 @@ beforeAll(() => {
       stdoutData += str;
       return true;
     });
+});
+
+describe("retrieve environment variables", () => {
+  it("should retrieve an environment variable", () => {
+    process.env["AN_ENV"] = "a value";
+    expect(mustGetEnvironment("AN_ENV")).toBe("a value");
+  });
+
+  it("should fail to retrieve an undefined environment variable", () => {
+    delete process.env["AN_UNDEFINED_ENV"];
+    expect(() => mustGetEnvironment("AN_UNDEFINED_ENV")).toThrow(
+      "the AN_UNDEFINED_ENV environment variable must be defined",
+    );
+  });
 });
 
 describe("retrieve GitHub Actions inputs", () => {
