@@ -225,7 +225,7 @@ describe("log errors in GitHub Actions", () => {
 describe("log commands in GitHub Actions", () => {
   it("should log a command in GitHub Actions", () => {
     stdoutData = "";
-    logCommand("cmd", ["arg0", "arg1", "arg2"]);
+    logCommand("cmd", "arg0", "arg1", "arg2");
     expect(stdoutData).toBe(`[command]cmd arg0 arg1 arg2${os.EOL}`);
   });
 });

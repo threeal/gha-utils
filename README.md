@@ -48,7 +48,7 @@ There are various ways to log messages in GitHub Actions, including `logInfo` fo
 try {
   logInfo("some information");
   logWarning("some warning");
-  logCommand("command", ["arg0", "arg1", "arg2"]);
+  logCommand("command", "arg0", "arg1", "arg2");
 } catch (err) {
   logError(err);
 }
