@@ -9,6 +9,14 @@ A minimalistic utility package for developing [GitHub Actions](https://github.co
 - Setting environment variables and appending system paths
 - Logging various kinds of messages
 
+## Installation
+
+This project is available as an [npm](https://www.npmjs.com/) package under the name [gha-utils](https://www.npmjs.com/package/gha-utils):
+
+```sh
+npm install gha-utils
+```
+
 ## Usage Guide
 
 ### Getting Inputs and Setting Outputs
