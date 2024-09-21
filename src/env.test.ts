@@ -83,7 +83,7 @@ describe("set GitHub Actions outputs", () => {
     );
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await fsPromises.rm(githubOutputFile, { force: true });
   });
 });
@@ -127,7 +127,7 @@ describe("set GitHub Actions states", () => {
     );
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await fsPromises.rm(githubStateFile, { force: true });
   });
 });
@@ -177,7 +177,7 @@ describe("set environment variables in GitHub Actions", () => {
     );
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await fsPromises.rm(githubEnvFile, { force: true });
   });
 });
@@ -226,7 +226,7 @@ describe("adds system paths in GitHub Actions", () => {
     expect(content).toBe(`a-path${os.EOL}another-path${os.EOL}`);
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await fsPromises.rm(githubPathFile, { force: true });
   });
 });
