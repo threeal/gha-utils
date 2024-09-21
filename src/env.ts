@@ -53,6 +53,18 @@ export function setOutputSync(name: string, value: string): void {
 }
 
 /**
+ * Sets the value of a GitHub Actions state.
+ *
+ * @param name - The name of the GitHub Actions state.
+ * @param value - The value to set for the GitHub Actions state.
+ * @returns A promise that resolves when the value is successfully set.
+ */
+export async function setState(name: string, value: string): Promise<void> {
+  const filePath = mustGetEnvironment("GITHUB_STATE");
+  await fsPromises.appendFile(filePath, `${name}=${value}${os.EOL}`);
+}
+
+/**
  * Sets the value of an environment variable in GitHub Actions.
  *
  * @param name - The name of the environment variable.

@@ -6,6 +6,7 @@ export {
   setEnvSync,
   setOutput,
   setOutputSync,
+  setState,
 } from "./env.js";
 
 export {
