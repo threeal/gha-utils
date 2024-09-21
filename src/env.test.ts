@@ -42,15 +42,11 @@ describe("retrieve GitHub Actions inputs", () => {
 });
 
 describe("set GitHub Actions outputs", () => {
-  let tempFile: string;
+  const githubOutputFile = path.join(os.tmpdir(), "github_output");
+
   beforeEach(async () => {
-    tempFile = path.join(os.tmpdir(), "output");
-    process.env["GITHUB_OUTPUT"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    process.env["GITHUB_OUTPUT"] = githubOutputFile;
+    await fsPromises.rm(githubOutputFile, { force: true });
   });
 
   it("should set GitHub Actions outputs", async () => {
@@ -59,7 +55,11 @@ describe("set GitHub Actions outputs", () => {
       setOutput("another-output", "another value"),
     ]);
 
-    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+    const content = await fsPromises.readFile(githubOutputFile, {
+      encoding: "utf-8",
+    });
+
+    const lines = content
       .split(os.EOL)
       .filter((line) => line !== "")
       .sort();
@@ -74,31 +74,26 @@ describe("set GitHub Actions outputs", () => {
     setOutputSync("an-output", "a value");
     setOutputSync("another-output", "another value");
 
-    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    const content = await fsPromises.readFile(githubOutputFile, {
+      encoding: "utf-8",
+    });
+
     expect(content).toBe(
       `an-output=a value${os.EOL}another-output=another value${os.EOL}`,
     );
   });
 
-  afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+  afterAll(async () => {
+    await fsPromises.rm(githubOutputFile, { force: true });
   });
 });
 
 describe("set GitHub Actions states", () => {
-  let tempFile: string;
+  const githubStateFile = path.join(os.tmpdir(), "github_state");
+
   beforeEach(async () => {
-    tempFile = path.join(os.tmpdir(), "state");
-    process.env["GITHUB_STATE"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    process.env["GITHUB_STATE"] = githubStateFile;
+    await fsPromises.rm(githubStateFile, { force: true });
   });
 
   it("should set GitHub Actions states", async () => {
@@ -107,7 +102,11 @@ describe("set GitHub Actions states", () => {
       setState("another-state", "another value"),
     ]);
 
-    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+    const content = await fsPromises.readFile(githubStateFile, {
+      encoding: "utf-8",
+    });
+
+    const lines = content
       .split(os.EOL)
       .filter((line) => line !== "")
       .sort();
@@ -119,31 +118,26 @@ describe("set GitHub Actions states", () => {
     setStateSync("a-state", "a value");
     setStateSync("another-state", "another value");
 
-    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    const content = await fsPromises.readFile(githubStateFile, {
+      encoding: "utf-8",
+    });
+
     expect(content).toBe(
       `a-state=a value${os.EOL}another-state=another value${os.EOL}`,
     );
   });
 
-  afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+  afterAll(async () => {
+    await fsPromises.rm(githubStateFile, { force: true });
   });
 });
 
 describe("set environment variables in GitHub Actions", () => {
-  let tempFile: string;
+  const githubEnvFile = path.join(os.tmpdir(), "github_env");
+
   beforeEach(async () => {
-    tempFile = path.join(os.tmpdir(), "env");
-    process.env["GITHUB_ENV"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    process.env["GITHUB_ENV"] = githubEnvFile;
+    await fsPromises.rm(githubEnvFile, { force: true });
   });
 
   it("should set environment variables in GitHub Actions", async () => {
@@ -155,7 +149,11 @@ describe("set environment variables in GitHub Actions", () => {
     expect(process.env.AN_ENV).toBe("a value");
     expect(process.env.ANOTHER_ENV).toBe("another value");
 
-    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+    const content = await fsPromises.readFile(githubEnvFile, {
+      encoding: "utf-8",
+    });
+
+    const lines = content
       .split(os.EOL)
       .filter((line) => line !== "")
       .sort();
@@ -170,31 +168,26 @@ describe("set environment variables in GitHub Actions", () => {
     expect(process.env.AN_ENV).toBe("a value");
     expect(process.env.ANOTHER_ENV).toBe("another value");
 
-    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    const content = await fsPromises.readFile(githubEnvFile, {
+      encoding: "utf-8",
+    });
+
     expect(content).toBe(
       `AN_ENV=a value${os.EOL}ANOTHER_ENV=another value${os.EOL}`,
     );
   });
 
-  afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+  afterAll(async () => {
+    await fsPromises.rm(githubEnvFile, { force: true });
   });
 });
 
 describe("adds system paths in GitHub Actions", () => {
-  let tempFile: string;
+  const githubPathFile = path.join(os.tmpdir(), "github_path");
+
   beforeEach(async () => {
-    tempFile = path.join(os.tmpdir(), "path");
-    process.env["GITHUB_PATH"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    process.env["GITHUB_PATH"] = githubPathFile;
+    await fsPromises.rm(githubPathFile, { force: true });
   });
 
   it("should add system paths in GitHub Actions", async () => {
@@ -206,7 +199,11 @@ describe("adds system paths in GitHub Actions", () => {
       .sort();
     expect(sysPaths).toEqual(["a-path", "another-path"]);
 
-    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+    const content = await fsPromises.readFile(githubPathFile, {
+      encoding: "utf-8",
+    });
+
+    const lines = content
       .split(os.EOL)
       .filter((line) => line !== "")
       .sort();
@@ -222,15 +219,14 @@ describe("adds system paths in GitHub Actions", () => {
       .slice(0, 2);
     expect(sysPaths).toEqual(["another-path", "a-path"]);
 
-    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    const content = await fsPromises.readFile(githubPathFile, {
+      encoding: "utf-8",
+    });
+
     expect(content).toBe(`a-path${os.EOL}another-path${os.EOL}`);
   });
 
-  afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+  afterAll(async () => {
+    await fsPromises.rm(githubPathFile, { force: true });
   });
 });
