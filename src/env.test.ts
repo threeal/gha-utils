@@ -46,11 +46,7 @@ describe("set GitHub Actions outputs", () => {
   beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "output");
     process.env["GITHUB_OUTPUT"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 
   it("should set GitHub Actions outputs", async () => {
@@ -81,11 +77,7 @@ describe("set GitHub Actions outputs", () => {
   });
 
   afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 });
 
@@ -94,11 +86,7 @@ describe("set GitHub Actions states", () => {
   beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "state");
     process.env["GITHUB_STATE"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 
   it("should set GitHub Actions states", async () => {
@@ -126,11 +114,7 @@ describe("set GitHub Actions states", () => {
   });
 
   afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 });
 
@@ -139,11 +123,7 @@ describe("set environment variables in GitHub Actions", () => {
   beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "env");
     process.env["GITHUB_ENV"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 
   it("should set environment variables in GitHub Actions", async () => {
@@ -177,11 +157,7 @@ describe("set environment variables in GitHub Actions", () => {
   });
 
   afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 });
 
@@ -190,11 +166,7 @@ describe("adds system paths in GitHub Actions", () => {
   beforeEach(async () => {
     tempFile = path.join(os.tmpdir(), "path");
     process.env["GITHUB_PATH"] = tempFile;
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 
   it("should add system paths in GitHub Actions", async () => {
@@ -227,10 +199,6 @@ describe("adds system paths in GitHub Actions", () => {
   });
 
   afterEach(async () => {
-    try {
-      await fsPromises.rm(tempFile);
-    } catch (err) {
-      if ((err as any).code !== "ENOENT") throw err;
-    }
+    await fsPromises.rm(tempFile, { force: true });
   });
 });
