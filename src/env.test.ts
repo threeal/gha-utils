@@ -11,6 +11,8 @@ import {
   setEnvSync,
   setOutput,
   setOutputSync,
+  setState,
+  setStateSync,
 } from "./env.js";
 
 describe("retrieve environment variables", () => {
@@ -75,6 +77,51 @@ describe("set GitHub Actions outputs", () => {
     const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
     expect(content).toBe(
       `an-output=a value${os.EOL}another-output=another value${os.EOL}`,
+    );
+  });
+
+  afterEach(async () => {
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
+    }
+  });
+});
+
+describe("set GitHub Actions states", () => {
+  let tempFile: string;
+  beforeEach(async () => {
+    tempFile = path.join(os.tmpdir(), "state");
+    process.env["GITHUB_STATE"] = tempFile;
+    try {
+      await fsPromises.rm(tempFile);
+    } catch (err) {
+      if ((err as any).code !== "ENOENT") throw err;
+    }
+  });
+
+  it("should set GitHub Actions states", async () => {
+    await Promise.all([
+      setState("a-state", "a value"),
+      setState("another-state", "another value"),
+    ]);
+
+    const lines = (await fsPromises.readFile(tempFile, { encoding: "utf-8" }))
+      .split(os.EOL)
+      .filter((line) => line !== "")
+      .sort();
+
+    expect(lines).toEqual(["a-state=a value", "another-state=another value"]);
+  });
+
+  it("should set GitHub Actions states synchronously", async () => {
+    setStateSync("a-state", "a value");
+    setStateSync("another-state", "another value");
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(
+      `a-state=a value${os.EOL}another-state=another value${os.EOL}`,
     );
   });
 
