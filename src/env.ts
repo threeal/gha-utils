@@ -65,6 +65,17 @@ export async function setState(name: string, value: string): Promise<void> {
 }
 
 /**
+ * Sets the value of a GitHub Actions state synchronously.
+ *
+ * @param name - The name of the GitHub Actions state.
+ * @param value - The value to set for the GitHub Actions state.
+ */
+export function setStateSync(name: string, value: string): void {
+  const filePath = mustGetEnvironment("GITHUB_STATE");
+  fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`);
+}
+
+/**
  * Sets the value of an environment variable in GitHub Actions.
  *
  * @param name - The name of the environment variable.

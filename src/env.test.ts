@@ -12,6 +12,7 @@ import {
   setOutput,
   setOutputSync,
   setState,
+  setStateSync,
 } from "./env.js";
 
 describe("retrieve environment variables", () => {
@@ -112,6 +113,16 @@ describe("set GitHub Actions states", () => {
       .sort();
 
     expect(lines).toEqual(["a-state=a value", "another-state=another value"]);
+  });
+
+  it("should set GitHub Actions states synchronously", async () => {
+    setStateSync("a-state", "a value");
+    setStateSync("another-state", "another value");
+
+    const content = await fsPromises.readFile(tempFile, { encoding: "utf-8" });
+    expect(content).toBe(
+      `a-state=a value${os.EOL}another-state=another value${os.EOL}`,
+    );
   });
 
   afterEach(async () => {
