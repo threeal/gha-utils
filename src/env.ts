@@ -121,7 +121,11 @@ export function setEnvSync(name: string, value: string): void {
  * @returns A promise that resolves when the system path is successfully added.
  */
 export async function addPath(sysPath: string): Promise<void> {
-  process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
+  process.env.PATH =
+    process.env.PATH !== undefined
+      ? `${sysPath}${path.delimiter}${process.env.PATH}`
+      : sysPath;
+
   const filePath = mustGetEnvironment("GITHUB_PATH");
   await fsPromises.appendFile(filePath, `${sysPath}${os.EOL}`);
 }
@@ -132,7 +136,11 @@ export async function addPath(sysPath: string): Promise<void> {
  * @param sysPath - The system path to add to the environment.
  */
 export function addPathSync(sysPath: string): void {
-  process.env["PATH"] = `${sysPath}${path.delimiter}${process.env["PATH"]}`;
+  process.env.PATH =
+    process.env.PATH !== undefined
+      ? `${sysPath}${path.delimiter}${process.env.PATH}`
+      : sysPath;
+
   const filePath = mustGetEnvironment("GITHUB_PATH");
   fs.appendFileSync(filePath, `${sysPath}${os.EOL}`);
 }
