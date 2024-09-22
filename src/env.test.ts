@@ -15,6 +15,12 @@ import {
   setStateSync,
 } from "./env.js";
 
+const originalProcessEnv = { ...process.env };
+
+beforeEach(() => {
+  process.env = {};
+});
+
 describe("retrieve environment variables", () => {
   it("should retrieve an environment variable", () => {
     process.env["AN_ENV"] = "a value";
@@ -22,7 +28,6 @@ describe("retrieve environment variables", () => {
   });
 
   it("should fail to retrieve an undefined environment variable", () => {
-    delete process.env["AN_UNDEFINED_ENV"];
     expect(() => mustGetEnvironment("AN_UNDEFINED_ENV")).toThrow(
       "the AN_UNDEFINED_ENV environment variable must be defined",
     );
@@ -36,7 +41,6 @@ describe("retrieve GitHub Actions inputs", () => {
   });
 
   it("should retrieve an undefined GitHub Actions input", () => {
-    delete process.env["INPUT_AN-UNDEFINED-INPUT"];
     expect(getInput("an-undefined-input")).toBe("");
   });
 });
@@ -146,8 +150,11 @@ describe("set environment variables in GitHub Actions", () => {
       setEnv("ANOTHER_ENV", "another value"),
     ]);
 
-    expect(process.env.AN_ENV).toBe("a value");
-    expect(process.env.ANOTHER_ENV).toBe("another value");
+    expect(process.env).toEqual({
+      GITHUB_ENV: githubEnvFile,
+      AN_ENV: "a value",
+      ANOTHER_ENV: "another value",
+    });
 
     const content = await fsPromises.readFile(githubEnvFile, {
       encoding: "utf-8",
@@ -165,8 +172,11 @@ describe("set environment variables in GitHub Actions", () => {
     setEnvSync("AN_ENV", "a value");
     setEnvSync("ANOTHER_ENV", "another value");
 
-    expect(process.env.AN_ENV).toBe("a value");
-    expect(process.env.ANOTHER_ENV).toBe("another value");
+    expect(process.env).toEqual({
+      GITHUB_ENV: githubEnvFile,
+      AN_ENV: "a value",
+      ANOTHER_ENV: "another value",
+    });
 
     const content = await fsPromises.readFile(githubEnvFile, {
       encoding: "utf-8",
@@ -229,4 +239,8 @@ describe("adds system paths in GitHub Actions", () => {
   afterAll(async () => {
     await fsPromises.rm(githubPathFile, { force: true });
   });
+});
+
+afterAll(() => {
+  process.env = originalProcessEnv;
 });
