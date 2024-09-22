@@ -6,6 +6,7 @@ import {
   addPath,
   addPathSync,
   getInput,
+  getState,
   mustGetEnvironment,
   setEnv,
   setEnvSync,
@@ -92,6 +93,17 @@ describe("set GitHub Actions outputs", () => {
   });
 });
 
+describe("retrieve GitHub Actions states", () => {
+  it("should retrieve a GitHub Actions state", () => {
+    process.env["STATE_A-STATE"] = " a value  ";
+    expect(getState("a-state")).toBe("a value");
+  });
+
+  it("should retrieve an undefined GitHub Actions state", () => {
+    expect(getState("an-undefined-state")).toBe("");
+  });
+});
+
 describe("set GitHub Actions states", () => {
   const githubStateFile = path.join(os.tmpdir(), "github_state");
 
@@ -105,6 +117,12 @@ describe("set GitHub Actions states", () => {
       setState("a-state", "a value"),
       setState("another-state", "another value"),
     ]);
+
+    expect(process.env).toEqual({
+      GITHUB_STATE: githubStateFile,
+      "STATE_A-STATE": "a value",
+      "STATE_ANOTHER-STATE": "another value",
+    });
 
     const content = await fsPromises.readFile(githubStateFile, {
       encoding: "utf-8",
@@ -121,6 +139,12 @@ describe("set GitHub Actions states", () => {
   it("should set GitHub Actions states synchronously", async () => {
     setStateSync("a-state", "a value");
     setStateSync("another-state", "another value");
+
+    expect(process.env).toEqual({
+      GITHUB_STATE: githubStateFile,
+      "STATE_A-STATE": "a value",
+      "STATE_ANOTHER-STATE": "another value",
+    });
 
     const content = await fsPromises.readFile(githubStateFile, {
       encoding: "utf-8",

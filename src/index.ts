@@ -2,6 +2,7 @@ export {
   addPath,
   addPathSync,
   getInput,
+  getState,
   setEnv,
   setEnvSync,
   setOutput,
