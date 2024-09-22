@@ -227,10 +227,7 @@ describe("adds system paths in GitHub Actions", () => {
   it("should add system paths in GitHub Actions", async () => {
     await Promise.all([addPath("a-path"), addPath("another-path")]);
 
-    const sysPaths = (process.env["PATH"] ?? "")
-      .split(path.delimiter)
-      .slice(0, 2)
-      .sort();
+    const sysPaths = (process.env.PATH ?? "").split(path.delimiter).sort();
     expect(sysPaths).toEqual(["a-path", "another-path"]);
 
     const content = await fsPromises.readFile(githubPathFile, {
@@ -248,9 +245,7 @@ describe("adds system paths in GitHub Actions", () => {
     addPathSync("a-path");
     addPathSync("another-path");
 
-    const sysPaths = (process.env["PATH"] ?? "")
-      .split(path.delimiter)
-      .slice(0, 2);
+    const sysPaths = (process.env.PATH ?? "").split(path.delimiter);
     expect(sysPaths).toEqual(["another-path", "a-path"]);
 
     const content = await fsPromises.readFile(githubPathFile, {
