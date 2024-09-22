@@ -6,7 +6,7 @@ A minimalistic utility package for developing [GitHub Actions](https://github.co
 
 - ES Module support
 - Getting inputs and setting outputs
-- Setting states
+- Getting and setting states
 - Setting environment variables and appending system paths
 - Logging various kinds of messages
 
@@ -31,13 +31,19 @@ await setOutput("output-name", "a value");
 setOutputSync("another-output-name", "another value");
 ```
 
-### Setting States
+### Getting and Setting States
 
 GitHub Actions states are useful for passing data between the pre, main, and post steps of the same GitHub Action. States can be set using the [`setState`](https://threeal.github.io/gha-utils/functions/setState.html) or [`setStateSync`](https://threeal.github.io/gha-utils/functions/setStateSync.html) functions:
 
 ```ts
 await setState("state-name", "a value");
 setStateSync("another-state-name", "another value");
+```
+
+They can then be retrieved in the current or other steps using the [`getState`](https://threeal.github.io/gha-utils/functions/getState.html) function:
+
+```ts
+const state = getState("state-name");
 ```
 
 ### Setting Environment Variables
