@@ -71,6 +71,7 @@ export function getState(name: string): string {
  * @returns A promise that resolves when the value is successfully set.
  */
 export async function setState(name: string, value: string): Promise<void> {
+  process.env[`STATE_${name.toUpperCase()}`] = value;
   const filePath = mustGetEnvironment("GITHUB_STATE");
   await fsPromises.appendFile(filePath, `${name}=${value}${os.EOL}`);
 }
@@ -82,6 +83,7 @@ export async function setState(name: string, value: string): Promise<void> {
  * @param value - The value to set for the GitHub Actions state.
  */
 export function setStateSync(name: string, value: string): void {
+  process.env[`STATE_${name.toUpperCase()}`] = value;
   const filePath = mustGetEnvironment("GITHUB_STATE");
   fs.appendFileSync(filePath, `${name}=${value}${os.EOL}`);
 }

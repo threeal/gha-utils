@@ -118,6 +118,12 @@ describe("set GitHub Actions states", () => {
       setState("another-state", "another value"),
     ]);
 
+    expect(process.env).toEqual({
+      GITHUB_STATE: githubStateFile,
+      "STATE_A-STATE": "a value",
+      "STATE_ANOTHER-STATE": "another value",
+    });
+
     const content = await fsPromises.readFile(githubStateFile, {
       encoding: "utf-8",
     });
@@ -133,6 +139,12 @@ describe("set GitHub Actions states", () => {
   it("should set GitHub Actions states synchronously", async () => {
     setStateSync("a-state", "a value");
     setStateSync("another-state", "another value");
+
+    expect(process.env).toEqual({
+      GITHUB_STATE: githubStateFile,
+      "STATE_A-STATE": "a value",
+      "STATE_ANOTHER-STATE": "another value",
+    });
 
     const content = await fsPromises.readFile(githubStateFile, {
       encoding: "utf-8",
