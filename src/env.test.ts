@@ -24,7 +24,7 @@ beforeEach(() => {
 
 describe("retrieve environment variables", () => {
   it("should retrieve an environment variable", () => {
-    process.env["AN_ENV"] = "a value";
+    process.env.AN_ENV = "a value";
     expect(mustGetEnvironment("AN_ENV")).toBe("a value");
   });
 
@@ -50,7 +50,7 @@ describe("set GitHub Actions outputs", () => {
   const githubOutputFile = path.join(os.tmpdir(), "github_output");
 
   beforeEach(async () => {
-    process.env["GITHUB_OUTPUT"] = githubOutputFile;
+    process.env.GITHUB_OUTPUT = githubOutputFile;
     await fsPromises.rm(githubOutputFile, { force: true });
   });
 
@@ -108,7 +108,7 @@ describe("set GitHub Actions states", () => {
   const githubStateFile = path.join(os.tmpdir(), "github_state");
 
   beforeEach(async () => {
-    process.env["GITHUB_STATE"] = githubStateFile;
+    process.env.GITHUB_STATE = githubStateFile;
     await fsPromises.rm(githubStateFile, { force: true });
   });
 
@@ -164,7 +164,7 @@ describe("set environment variables in GitHub Actions", () => {
   const githubEnvFile = path.join(os.tmpdir(), "github_env");
 
   beforeEach(async () => {
-    process.env["GITHUB_ENV"] = githubEnvFile;
+    process.env.GITHUB_ENV = githubEnvFile;
     await fsPromises.rm(githubEnvFile, { force: true });
   });
 
@@ -220,7 +220,7 @@ describe("adds system paths in GitHub Actions", () => {
   const githubPathFile = path.join(os.tmpdir(), "github_path");
 
   beforeEach(async () => {
-    process.env["GITHUB_PATH"] = githubPathFile;
+    process.env.GITHUB_PATH = githubPathFile;
     await fsPromises.rm(githubPathFile, { force: true });
   });
 
