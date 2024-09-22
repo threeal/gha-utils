@@ -25,7 +25,7 @@ export function mustGetEnvironment(name: string): string {
  * @returns The value of the GitHub Actions input, or an empty string if not found.
  */
 export function getInput(name: string): string {
-  const value = process.env[`INPUT_${name.toUpperCase()}`] || "";
+  const value = process.env[`INPUT_${name.toUpperCase()}`] ?? "";
   return value.trim();
 }
 
@@ -59,7 +59,7 @@ export function setOutputSync(name: string, value: string): void {
  * @returns The value of the GitHub Actions state, or an empty string if not found.
  */
 export function getState(name: string): string {
-  const value = process.env[`STATE_${name.toUpperCase()}`] || "";
+  const value = process.env[`STATE_${name.toUpperCase()}`] ?? "";
   return value.trim();
 }
 
