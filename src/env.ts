@@ -53,6 +53,17 @@ export function setOutputSync(name: string, value: string): void {
 }
 
 /**
+ * Retrieves the value of a GitHub Actions state.
+ *
+ * @param name - The name of the GitHub Actions state.
+ * @returns The value of the GitHub Actions state, or an empty string if not found.
+ */
+export function getState(name: string): string {
+  const value = process.env[`STATE_${name.toUpperCase()}`] || "";
+  return value.trim();
+}
+
+/**
  * Sets the value of a GitHub Actions state.
  *
  * @param name - The name of the GitHub Actions state.

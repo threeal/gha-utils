@@ -6,6 +6,7 @@ import {
   addPath,
   addPathSync,
   getInput,
+  getState,
   mustGetEnvironment,
   setEnv,
   setEnvSync,
@@ -89,6 +90,17 @@ describe("set GitHub Actions outputs", () => {
 
   afterAll(async () => {
     await fsPromises.rm(githubOutputFile, { force: true });
+  });
+});
+
+describe("retrieve GitHub Actions states", () => {
+  it("should retrieve a GitHub Actions state", () => {
+    process.env["STATE_A-STATE"] = " a value  ";
+    expect(getState("a-state")).toBe("a value");
+  });
+
+  it("should retrieve an undefined GitHub Actions state", () => {
+    expect(getState("an-undefined-state")).toBe("");
   });
 });
 
