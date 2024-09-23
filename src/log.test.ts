@@ -5,6 +5,7 @@ import {
   beginLogGroup,
   endLogGroup,
   logCommand,
+  logDebug,
   logError,
   logInfo,
   logWarning,
@@ -25,6 +26,14 @@ describe("log information in GitHub Actions", () => {
     stdoutData = "";
     logInfo("an information message");
     expect(stdoutData).toBe(`an information message${os.EOL}`);
+  });
+});
+
+describe("log debugs in GitHub Actions", () => {
+  it("should log a debug message in GitHub Actions", () => {
+    stdoutData = "";
+    logDebug("a debug message");
+    expect(stdoutData).toBe(`::debug::a debug message${os.EOL}`);
   });
 });
 

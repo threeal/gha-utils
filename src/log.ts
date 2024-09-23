@@ -10,6 +10,15 @@ export function logInfo(message: string): void {
 }
 
 /**
+ * Logs a debug message in GitHub Actions.
+ *
+ * @param message - The debug message to log.
+ */
+export function logDebug(message: string): void {
+  process.stdout.write(`::debug::${message}${os.EOL}`);
+}
+
+/**
  * Logs a warning message in GitHub Actions.
  *
  * @param message - The warning message to log.

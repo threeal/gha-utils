@@ -15,6 +15,7 @@ export {
   beginLogGroup,
   endLogGroup,
   logCommand,
+  logDebug,
   logError,
   logInfo,
   logWarning,
