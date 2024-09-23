@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 
 /**
+ * @internal
  * Retrieves the value of an environment variable.
  *
  * @param name - The name of the environment variable.
