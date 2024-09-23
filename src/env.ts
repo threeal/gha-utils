@@ -60,7 +60,7 @@ export function setOutputSync(name: string, value: string): void {
  * @returns The value of the GitHub Actions state, or an empty string if not found.
  */
 export function getState(name: string): string {
-  const value = process.env[`STATE_${name.toUpperCase()}`] ?? "";
+  const value = process.env[`STATE_${name}`] ?? "";
   return value.trim();
 }
 

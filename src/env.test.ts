@@ -95,7 +95,7 @@ describe("set GitHub Actions outputs", () => {
 
 describe("retrieve GitHub Actions states", () => {
   it("should retrieve a GitHub Actions state", () => {
-    process.env["STATE_A-STATE"] = " a value  ";
+    process.env["STATE_a-state"] = " a value  ";
     expect(getState("a-state")).toBe("a value");
   });
 
