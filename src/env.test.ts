@@ -95,7 +95,7 @@ describe("set GitHub Actions outputs", () => {
 
 describe("retrieve GitHub Actions states", () => {
   it("should retrieve a GitHub Actions state", () => {
-    process.env["STATE_A-STATE"] = " a value  ";
+    process.env["STATE_a-state"] = " a value  ";
     expect(getState("a-state")).toBe("a value");
   });
 
@@ -120,8 +120,8 @@ describe("set GitHub Actions states", () => {
 
     expect(process.env).toEqual({
       GITHUB_STATE: githubStateFile,
-      "STATE_A-STATE": "a value",
-      "STATE_ANOTHER-STATE": "another value",
+      "STATE_a-state": "a value",
+      "STATE_another-state": "another value",
     });
 
     const content = await fsPromises.readFile(githubStateFile, {
@@ -142,8 +142,8 @@ describe("set GitHub Actions states", () => {
 
     expect(process.env).toEqual({
       GITHUB_STATE: githubStateFile,
-      "STATE_A-STATE": "a value",
-      "STATE_ANOTHER-STATE": "another value",
+      "STATE_a-state": "a value",
+      "STATE_another-state": "another value",
     });
 
     const content = await fsPromises.readFile(githubStateFile, {
