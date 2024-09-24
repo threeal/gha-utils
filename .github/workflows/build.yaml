@@ -28,6 +28,8 @@ jobs:
         with:
           name: package
           path: package.tgz
+          if-no-files-found: error
+          overwrite: true
 
   build-docs:
     name: Build Documentation
@@ -52,3 +54,5 @@ jobs:
         with:
           name: docs
           path: docs
+          if-no-files-found: error
+          overwrite: true
