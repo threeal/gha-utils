@@ -1,5 +1,5 @@
-import { jest } from "@jest/globals";
 import os from "node:os";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   beginLogGroup,
@@ -12,12 +12,10 @@ import {
 } from "./log.js";
 
 let stdoutData: string;
-jest
-  .spyOn(process.stdout, "write")
-  .mockImplementation((str: string | Uint8Array): boolean => {
-    stdoutData += str;
-    return true;
-  });
+process.stdout.write = vi.fn((str: string | Uint8Array): boolean => {
+  stdoutData += str;
+  return true;
+});
 
 beforeEach(() => {
   stdoutData = "";
