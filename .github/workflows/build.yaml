@@ -33,4 +33,4 @@ jobs:
         run: pnpm build:docs
 
       - name: Package Library
-        run: pnpm pack --out package.tgz
+        run: pnpm pack
