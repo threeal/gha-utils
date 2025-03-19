@@ -22,10 +22,6 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "build:docs": "typedoc src/index.ts",
-    "format": "prettier --write --cache .",
-    "lint": "eslint",
     "prepack": "tsc",
     "test": "vitest"
   },
