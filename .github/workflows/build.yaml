@@ -19,18 +19,19 @@ jobs:
         run: pnpm install
 
       - name: Check Formatting
-        run: |
-          pnpm format
-          git diff --exit-code HEAD
+        run: pnpm prettier --check .
 
       - name: Check Lint
-        run: pnpm lint
+        run: pnpm eslint
+
+      - name: Check Types
+        run: pnpm tsc --noEmit
+
+      - name: Check Documentation
+        run: pnpm typedoc src/index.ts --emit none --treatWarningsAsErrors
 
       - name: Test Library
         run: pnpm test
-
-      - name: Build Documentation
-        run: pnpm build:docs
 
       - name: Package Library
         run: pnpm pack --out package.tgz
