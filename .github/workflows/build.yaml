@@ -25,7 +25,7 @@ jobs:
         run: pnpm eslint
 
       - name: Check Types
-        run: pnpm tsc --noEmit
+        run: pnpm tsc
 
       - name: Check Documentation
         run: pnpm typedoc src/index.ts --emit none --treatWarningsAsErrors
