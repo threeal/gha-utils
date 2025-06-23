@@ -12,8 +12,8 @@ import {
 } from "./log.js";
 
 let stdoutData: string;
-process.stdout.write = vi.fn((str: string | Uint8Array): boolean => {
-  stdoutData += str;
+vi.spyOn(process.stdout, "write").mockImplementation((buffer) => {
+  if (typeof buffer === "string") stdoutData += buffer;
   return true;
 });
 
