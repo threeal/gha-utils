@@ -1,6 +1,14 @@
 pre-commit:
   piped: true
   jobs:
+    - name: install dependencies
+      run: pnpm install
+      glob:
+        - .npmrc
+        - package.json
+        - pnpm-lock.yaml
+        - pnpm-workspace.yaml
+
     - name: fix formatting
       run: pnpm prettier --write --ignore-unknown {staged_files}
 
