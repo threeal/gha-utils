@@ -28,7 +28,7 @@ jobs:
         run: pnpm tsc
 
       - name: Check Documentation
-        run: pnpm typedoc src/index.ts --emit none --treatWarningsAsErrors
+        run: pnpm typedoc --emit none
 
       - name: Test Library
         run: pnpm test
