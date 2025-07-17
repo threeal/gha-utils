@@ -18,20 +18,20 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Check Types
+        run: pnpm tsc
+
+      - name: Test Library
+        run: pnpm test
+
       - name: Check Formatting
         run: pnpm prettier --check .
 
       - name: Check Lint
         run: pnpm eslint
 
-      - name: Check Types
-        run: pnpm tsc
-
       - name: Check Documentation
         run: pnpm typedoc src/index.ts --emit none --treatWarningsAsErrors
-
-      - name: Test Library
-        run: pnpm test
 
       - name: Package Library
         run: pnpm pack
