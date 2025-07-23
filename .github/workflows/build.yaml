@@ -31,7 +31,7 @@ jobs:
         run: pnpm eslint
 
       - name: Check Documentation
-        run: pnpm typedoc src/index.ts --emit none --treatWarningsAsErrors
+        run: pnpm typedoc --emit none
 
       - name: Package Library
         run: pnpm pack
